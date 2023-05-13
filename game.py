@@ -11,7 +11,9 @@ from enemy import Enemy
 def game():
     jogador = perform_player_creation()
     loja = Loja()
-    while(True):
+    op = True
+    while(op):
+        print("", end="\n")
         moviment = inquirer.select(
             message="Onde quer ir?\n",
             choices=[
@@ -24,15 +26,16 @@ def game():
     
     
         if(moviment=="Floresta"):
-            print(f"Você entrou na floresta...")
+            print(f"\nVocê entrou na floresta...\n")
             sleep(2)
             enemy = random.choice(Enemy.ENEMY_LIST)
             jogador.fight(enemy)
-        if(moviment=="Loja"):
+        elif(moviment=="Loja"):
             jogador.comprar_item(loja.menu())
-        if(moviment=="Inventário"):
+        elif(moviment=="Inventário"):
             jogador.invent()
-        
+        else:
+            break
         
         
 if(__name__ == "__main__"):

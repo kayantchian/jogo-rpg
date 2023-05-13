@@ -12,7 +12,7 @@ def find_dict_by_value(items, key, value):
 
 class Loja():
     
-    ITEMS = [{"name" : "Poção", "price": 5}, {"name" : "Anjo Guardião", "price" : 150}]
+    ITEMS = [{"name" : "Poção de vida", "price": 5}, {"name" : "Anjo Guardião", "price" : 150}]
     EQUIPAMENTOS = [{"name":"Lâmina de Doran", "price":45}, {"name":"Escudo de Doran", "price":35}]
     
     def menu(self) -> int:
@@ -20,11 +20,11 @@ class Loja():
         while(op):
             op = inquirer.select(
                 message="Selecione uma opção da Loja:",
-                choices=["Items","Equipamentos",Choice(value=False, name="Sair"), ]).execute()
+                choices=["Items mágicos","Equipamentos",Choice(value=False, name="Sair"), ]).execute()
             
             if(op=="Items"):                    
                 selected_item = inquirer.select(
-                    message="Selecione um item\n",
+                    message="Selecione um item mágico\n",
                     choices=[f"{item['name']}: ${item['price']}" for item in Loja.ITEMS]).execute()
                 selected_item = selected_item.split(":", 1)  #get name of item in string
                 item = find_dict_by_value(Loja.ITEMS, "name",selected_item[0])
