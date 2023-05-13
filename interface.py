@@ -22,7 +22,7 @@ def main():
     op = True
     while(op):
         op = inquirer.select(
-            message="Selecione uma opção:",
+            message="Selecione uma opção:\n",
             choices=[
                 "Novo Jogo",
                 "Créditos",

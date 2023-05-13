@@ -48,7 +48,7 @@ class Player(Personagem):
         super().__init__(hp, atk, den, name)
         self.__AGE = age
         self.__CLASS = classe
-        self.__money = 0
+        self.__money = 5
         self.__xp = 10
         self.__inventory = []
     @property
@@ -77,8 +77,10 @@ class Player(Personagem):
     #Show player's inventory
     def invent(self):
         if len(self.inventory)>0:
+            print("\n=== INVENTÁRIO ===\n")
             for item in self.inventory:
-                print(f"{item}")
+                print(f"   {item}   ")
+            print("\n=================\n")
         else:
             print("\nVocê não tem itens no inventário.\n")
                          
@@ -151,8 +153,11 @@ class Player(Personagem):
                 
                 
     def comprar_item(self, item):
+        print(f"\nSaldo atual: {self.money}\n")
         if(self.money >= item['price']):
             self.money -= item['price']
+            print(f"\nVocê comprou {item['name']}", end="\n")
+            print(f"\nSaldo atual: {self.money}")
             self.inventory.append(item['name'])
             self.invent()
         else:

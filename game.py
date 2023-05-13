@@ -11,21 +11,29 @@ from enemy import Enemy
 def game():
     jogador = perform_player_creation()
     loja = Loja()
-    moviment = inquirer.select(
-        message="Onde quer ir?",
-        choices=[
-            "Floresta",
-            "Loja",
-            Choice(value=False, name="Voltar"),
-        ]
-    ).execute()
-    if(moviment=="Floresta"):
-        print(f"Você entrou na floresta...")
-        sleep(2)
-        enemy = random.choice(Enemy.ENEMY_LIST)
-        jogador.fight(enemy)
-    if(moviment=="Loja"):
-        jogador.comprar_item(loja.menu())
+    while(True):
+        moviment = inquirer.select(
+            message="Onde quer ir?\n",
+            choices=[
+                "Floresta",
+                "Loja",
+                "Inventário",
+                Choice(value=False, name="Voltar"),
+            ]
+        ).execute()
     
+    
+        if(moviment=="Floresta"):
+            print(f"Você entrou na floresta...")
+            sleep(2)
+            enemy = random.choice(Enemy.ENEMY_LIST)
+            jogador.fight(enemy)
+        if(moviment=="Loja"):
+            jogador.comprar_item(loja.menu())
+        if(moviment=="Inventário"):
+            jogador.invent()
+        
+        
+        
 if(__name__ == "__main__"):
     game()
