@@ -31,7 +31,9 @@ def main():
             default="Novo Jogo",
         ).execute()
         if op == "Novo Jogo":
-            game()
+            if(game()):
+                print("Você zerou o jogo!")
+                credits()
         elif op == "Créditos":
             credits()
         else:

@@ -5,11 +5,12 @@ from InquirerPy.separator import Separator
 import time
 from random import choice
 from player import *
+from enemy import *
 from loja import Loja
-from enemy import Enemy
+from mechanics import fight
 
 def game():
-    jogador = perform_player_creation()
+    player = perform_player_creation()
     loja = Loja()
     op = True
     while(op):
@@ -28,12 +29,23 @@ def game():
         if(moviment=="Floresta"):
             print(f"\nVocê entrou na floresta...\n")
             sleep(2)
-            enemy = random.choice(Enemy.ENEMY_LIST)
-            jogador.fight(enemy)
+            enemy = Enemy("Gárgula", *perform_enemy_creation("easy"))
+            if(fight(player, enemy)):
+                print("Você passou!")
+            else:
+                op = False
+                return False
         elif(moviment=="Loja"):
-            jogador.comprar_item(loja.menu())
+            print(f"\nSaldo atual: {player.money}\n")
+            categoria = inquirer.select(
+                message="Selecione uma opção da Loja:",
+                choices=["Itens mágicos","Equipamentos",Choice(value=False, name="Sair"), ]).execute()
+            if(categoria == "Itens mágicos"):
+                player.buy_item(loja.menu(categoria))
+            elif(categoria == "Equipamentos"):
+                player.buy_equip(loja.menu(categoria))
         elif(moviment=="Inventário"):
-            jogador.invent()
+            player.invent()
         else:
             break
         

@@ -51,6 +51,11 @@ class Player(Personagem):
         self.__money = 5
         self.__xp = 10
         self.__inventory = []
+        self.__equip = []
+        
+    @property
+    def equip(self):
+        return self.__equip
     @property
     def inventory(self):
         return self.__inventory
@@ -73,96 +78,47 @@ class Player(Personagem):
     def classe(self):
         return self._CLASS  
 
+    def boost_atk(self):
     
     #Show player's inventory
     def invent(self):
+        sleep(2)
         if len(self.inventory)>0:
             print("\n=== INVENTÁRIO ===\n")
             for item in self.inventory:
                 print(f"   {item}   ")
             print("\n=================\n")
         else:
-            print("\nVocê não tem itens no inventário.\n")
-                         
-    
-    def fight(self,enemy):
-        print(f"\n Um(a) {enemy.name} se aproxima!\n")
-        sleep(1)
-        turn = random.choice([True, False])
-        while enemy.hp > 0:
-            turn = not turn
-            print(f"\n{enemy.name}: {enemy.hp} HP", end="\n")
-            print(f"Você: {self.hp} HP", end="\n")
-            print("", end="\n")
             sleep(1.5)
-            #Player's turn
-            if(turn == True):
-                sleep(1)
-                player_choice = inquirer.select(
-        message="Selecione uma opção:",
-        choices=["Atacar","Item","Passar a vez", "Fugir"],
-    ).execute()
-                if(player_choice == "Atacar"):
-                    if(self.atk > enemy.den):
-                        print(f"\nVocê causou {self.atk} de dano!", end="\n")
-                        enemy.hp = enemy.hp - self.atk
-                        print(f"{enemy.name}: {enemy.hp} HP", end="\n")
-                    else:
-                        print(f"\nSeu ataque não causou dano em {enemy.name}", end="\n")
-                        enemy.den -= self.atk
-                        print(f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
+            print("\nVocê não tem itens no inventário.\n")
+                                    
                 
-                elif(player_choice == "Fugir"):
-                    if random.random() <= 0.25:
-                        print('\nVocê conseguiu fugir!', end="\n")
-                        sleep(2)
-                        break
-                    else:
-                        print(f'\n{enemy.name} bloqueou a sua fuga.', end="\n")
-                elif(player_choice == "Passar a vez"):
-                    pass
-                
-            #Enemy's turn        
-            elif(turn == False):
-                sleep(1)
-                if(enemy.atk > self.den):
-                    print(f"\n{enemy.name} te atacou! {enemy.atk} de dano\n", end="\n")
-                    self.hp -= enemy.atk
-                else:
-                    self.den -= enemy.atk
-                    print(f"\nO ataque de {enemy.name} não teve efeito.", end="\n")
-                    sleep(0.5)
-                    print(f"Mas sua defesa foi reduzida para {self.den}")
-            #Verifies if player is dead
-            if self.hp <= 0:
-                for x in range(1, 10):
-                    print("==", end="", flush=True)
-                    sleep(0.1)
-                for char in "\n\n     GAME OVER      \n\n":
-                    print(char, end="", flush=True)
-                    sleep(0.1)
-                for x in range(1, 10):
-                    print("==", end="", flush=True)
-                    sleep(0.1)
-                break
-        #Verifies if enemy is dead:
-        if enemy.hp <= 0:
-            print(f"\n{enemy.name} morreu!")
-            self.xp += enemy.xp
-            print(f'{enemy.xp} pontos de xp adquiridos! Atual: {self.xp}' , end="\n")           
-                
-                
-    def comprar_item(self, item):
+    def buy_item(self, item):
         print(f"\nSaldo atual: {self.money}\n")
         if(self.money >= item['price']):
             self.money -= item['price']
+            sleep(1.5)
             print(f"\nVocê comprou {item['name']}", end="\n")
             print(f"\nSaldo atual: {self.money}")
             self.inventory.append(item['name'])
             self.invent()
         else:
-            print(f"\n[!] Saldo insuficiente: {self.money}\n")
-
+            sleep(2)
+            print(f"\n[!] Saldo insuficiente, faltam:{item['price'] - self.money}\n moedas")
+            
+    def buy_equip(self, item):
+        print(f"\nSaldo atual: {self.money}\n")
+        if(self.money >= item['price']):
+            self.money -= item['price']
+            sleep(1.5)
+            print(f"\nVocê comprou {item['name']}", end="\n")
+            print(f"\nSaldo atual: {self.money}")
+            self.equip.append(item['name'])
+            self.invent()
+        else:
+            sleep(2)
+            print(f"\n[!] Saldo insuficiente, faltam:{item['price'] - self.money}\n moedas")
+            
     
       
       #Abstract function
@@ -188,13 +144,13 @@ def perform_player_creation():
     ).execute()
     if(classe == "Humano"):
         hp = 100
-        atk = 15
-        den = 22
+        atk = 10
+        den = 17
         return Player(hp, atk, den, name, age, classe)
     elif(classe=="Orc"):
-        hp = 250
-        atk = 25
-        den = 12
+        hp = 150
+        atk = 15
+        den = 10
         return Player(hp, atk, den, name, age, classe)
     
 
