@@ -5,11 +5,10 @@ from InquirerPy.separator import Separator
 import time
 from random import choice
 from player import *
-from enemy import *
 from loja import Loja
-from mechanics import fight
+from levels.level1 import *
 
-def game():
+def game() -> bool:
     player = perform_player_creation()
     loja = Loja()
     op = True
@@ -20,32 +19,31 @@ def game():
             choices=[
                 "Floresta",
                 "Loja",
+                "Status",
                 "Inventário",
+                "Equipamento",
                 Choice(value=False, name="Voltar"),
             ]
         ).execute()
     
     
         if(moviment=="Floresta"):
-            print(f"\nVocê entrou na floresta...\n")
-            sleep(2)
-            enemy = Enemy("Gárgula", *perform_enemy_creation("easy"))
-            if(fight(player, enemy)):
-                print("Você passou!")
-            else:
-                op = False
-                return False
+            level1(player)
         elif(moviment=="Loja"):
             print(f"\nSaldo atual: {player.money}\n")
             categoria = inquirer.select(
                 message="Selecione uma opção da Loja:",
-                choices=["Itens mágicos","Equipamentos",Choice(value=False, name="Sair"), ]).execute()
-            if(categoria == "Itens mágicos"):
+                choices=["Itens Mágicos","Equipamentos",Choice(value=False, name="Sair"), ]).execute()
+            if(categoria == "Itens Mágicos"):
                 player.buy_item(loja.menu(categoria))
             elif(categoria == "Equipamentos"):
                 player.buy_equip(loja.menu(categoria))
         elif(moviment=="Inventário"):
             player.invent()
+        elif(moviment=="Equipamento"):
+            player.equipament()
+        elif(moviment == "Status"):
+            player.status()
         else:
             break
         

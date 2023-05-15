@@ -3,22 +3,18 @@ from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from player import Player
+from mechanics import find_dict_by_value
 
-def find_dict_by_value(items, key, value):
-    for item in items:
-        if item.get(key) == value:
-            return item
-    return None
 
 class Loja():
     
-    ITEMS = [{"name" : "Poção de vida", "price": 15}, {"name" : "Anjo Guardião", "price" : 100}]
-    EQUIPAMENTOS = [{"name":"Lâmina de Doran", "price":135, "atk" : 20, "den" : 0}, {"name":"Escudo de Doran", "price":105, "atk" : 0, "den" : 25}]
+    ITEMS = [{"name" : "Poção de vida", "price": 15, 'limit': 5}, {"name" : "Anjo Guardião", "price" : 100, 'limit': 1}]
+    EQUIPAMENTOS = [{"name":"Lâmina de Doran", "price":135, "atk" : 20, "den" : 0, 'limit': 1}, {"name":"Escudo de Doran", "price":105, "atk" : 0, "den" : 25, 'limit': 1}]
     
-    def menu(self, categoria) -> int:
+    def menu(self, categoria) -> dict:
         op = True
         while(op):
-            if(categoria=="Itens mágicos"):                    
+            if(categoria=="Itens Mágicos"):                    
                 selected_item = inquirer.select(
                     message="Selecione um item mágico\n",
                     choices=[f"{item['name']}: ${item['price']}" for item in Loja.ITEMS]).execute()
@@ -35,4 +31,4 @@ class Loja():
                 return item
 if(__name__ == "__main__"):
     Loja = Loja()
-    print(Loja.menu())
+    print(Loja.menu("Itens Mágicos"))
