@@ -5,6 +5,16 @@ from InquirerPy.validator import EmptyInputValidator
 from player import *
 from enemy import *
 
+def anjo_guardiao(player) -> bool:
+    if(len(player.inventory)):
+        for item in player.inventory:
+            item.get('name') == "Anjo Guardião"
+            player.inventory.remove(item)
+            return True
+        return False
+    else:
+        return False
+    
 def find_dict_by_value(items, key, value):
     for item in items:
         if item.get(key) == value:
@@ -13,7 +23,8 @@ def find_dict_by_value(items, key, value):
 
 def magic_item_choice(player):
     print("\n")
-    selected_item = inquirer.select(
+    selected_item = i
+    nquirer.select(
                     message="Selecione um item mágico\n",
                     choices=[f"{item['name']}: MANA -> {item['cost_mana']}" for item in player.magic_items]).execute()  
     selected_item = selected_item.split(":", 1)  #get name of item in string
@@ -86,8 +97,6 @@ def fight(player, enemy) -> bool:
                 elif(player_choice == "Passar a vez"):
                     pass
                 
-                
-                
             #Enemy's turn        
             elif(turn == False):
                 enemy_choice = random.choice(ENEMY_CHOICES)
@@ -134,19 +143,22 @@ def fight(player, enemy) -> bool:
                     
             #Verifies if player is dead
             if player.hp <= 0:
-                for x in range(1, 10):
-                    print("==", end="", flush=True)
-                    sleep(0.1)
-                for char in "\n\n     GAME OVER      \n\n":
-                    print(char, end="", flush=True)
-                    sleep(0.1)
-                for x in range(1, 10):
-                    print("==", end="", flush=True)
-                    sleep(0.1)
-                print("\n", end="\n")
-                sleep(1)
-                break
-                return False
+                if(anjo_guardiao()): #Verifier is player has anjo guardiao in its inventory
+                    player.hp = player.MAX_HP
+                else:
+                    for x in range(1, 10):
+                        print("==", end="", flush=True)
+                        sleep(0.1)
+                    for char in "\n\n     GAME OVER      \n\n":
+                        print(char, end="", flush=True)
+                        sleep(0.1)
+                    for x in range(1, 10):
+                        print("==", end="", flush=True)
+                        sleep(0.1)
+                    print("\n", end="\n")
+                    sleep(1)
+                    break
+                    return False
               
         #Verifies if enemy is dead:
         if enemy.hp <= 0:
