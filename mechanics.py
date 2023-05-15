@@ -23,8 +23,7 @@ def find_dict_by_value(items, key, value):
 
 def magic_item_choice(player):
     print("\n")
-    selected_item = i
-    nquirer.select(
+    selected_item = inquirer.select(
                     message="Selecione um item mágico\n",
                     choices=[f"{item['name']}: MANA -> {item['cost_mana']}" for item in player.magic_items]).execute()  
     selected_item = selected_item.split(":", 1)  #get name of item in string
