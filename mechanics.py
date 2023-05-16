@@ -6,7 +6,7 @@ from player import *
 from enemy import *
 
 def anjo_guardiao(player) -> bool:
-    if(len(player.inventory)):
+    if(len(player.inventory)>0):
         for item in player.inventory:
             item.get('name') == "Anjo Guardião"
             player.inventory.remove(item)
@@ -94,6 +94,7 @@ def fight(player, enemy) -> bool:
                     else:
                         print(f'\n{enemy.name} bloqueou a sua fuga.', end="\n")
                 elif(player_choice == "Passar a vez"):
+                    print("\nVocê passou a vez!\n")
                     pass
                 
             #Enemy's turn        
@@ -142,8 +143,13 @@ def fight(player, enemy) -> bool:
                     
             #Verifies if player is dead
             if player.hp <= 0:
-                if(anjo_guardiao()): #Verifier is player has anjo guardiao in its inventory
+                sleep(1.5)
+                print("\nVocê morreu...")
+                if(anjo_guardiao(player)): #Verifier is player has anjo guardiao in its inventory
                     player.hp = player.MAX_HP
+                    sleep(1.5)
+                    print("Mas o Anjo Guardião ressuscitou você...\n")
+                    sleep(1.5)
                 else:
                     for x in range(1, 10):
                         print("==", end="", flush=True)
@@ -167,7 +173,7 @@ def fight(player, enemy) -> bool:
             print(f'{enemy.xp} pontos de xp adquiridos! Atual: {player.xp}' , end="\n")
             print(f'{enemy.money} moedas adquiridas! Atual: {player.money}' , end="\n")
             
-            player.magic_den = player.MAX_MAGIC_DEN
+            player.magic_den = player.MAGIC_MAX_DEN
             player.den = player.MAX_DEN
             player.mana = player.MAX_MANA
             return True

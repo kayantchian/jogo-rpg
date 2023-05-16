@@ -33,11 +33,13 @@ def game() -> bool:
             print(f"\nSaldo atual: {player.money}\n")
             categoria = inquirer.select(
                 message="Selecione uma opção da Loja:",
-                choices=["Itens Mágicos","Equipamentos",Choice(value=False, name="Sair"), ]).execute()
+                choices=["Itens Mágicos","Equipamentos", "Armas",Choice(value=False, name="Sair"), ]).execute()
             if(categoria == "Itens Mágicos"):
                 player.buy_item(loja.menu(categoria))
             elif(categoria == "Equipamentos"):
                 player.buy_equip(loja.menu(categoria))
+            elif(categoria == "Armas"):
+                player.buy_weapon(loja.menu(categoria))
         elif(moviment=="Inventário"):
             player.invent()
         elif(moviment=="Equipamento"):

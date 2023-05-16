@@ -2,6 +2,7 @@ from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator
 from time import sleep
 import random
+from items import Items
 
 class Personagem():
     def __init__(self, hp, atk, den, magic_den, name):
@@ -18,15 +19,17 @@ class Personagem():
         return self.__MAGIC_MAX_DEN     
     @property
     def MAX_DEN(self):
-        return self.__max_den          
+        return self.__MAX_DEN          
     @property
     def magic_den(self):
         return self.__magic_den
     @magic_den.setter
     def magic_den(self, new_den):
-        if new_den > 0:
+        if new_den > 0 & new_den < self.MAGIC_MAX_DEN:
             self.__magic_den = new_den       
-        else:
+        elif new_den >= self.MAGIC_MAX_DEN:
+            self.__magic_den = self.MAGIC_MAX_DEN
+        elif new_den <= 0:
             self.__magic_den = 0
     @property
     def name(self):
@@ -41,7 +44,7 @@ class Personagem():
     def hp(self, new_hp):
         if new_hp > 0 & new_hp < self.MAX_HP:
             self.__hp = new_hp
-        elif new_hp < 0:
+        elif new_hp <= 0:
             self.__hp = 0
         elif new_hp >= self.MAX_HP:
             self.__hp = self.MAX_HP     
@@ -59,9 +62,11 @@ class Personagem():
         return self.__den
     @den.setter
     def den(self, new_den):
-        if new_den > 0:
+        if new_den > 0 & new_den < self.MAX_DEN:
             self.__den = new_den       
-        else:
+        elif new_den >= self.MAX_DEN:
+            self.__den = self.MAX_DEN
+        elif new_den <= 0:
             self.__den = 0
             
 class Player(Personagem):
@@ -70,13 +75,17 @@ class Player(Personagem):
         self.__mana = 10
         self.__AGE = age
         self.__CLASS = classe
-        self.__money = 20
+        self.__money = 350
         self.__xp = 10
         self.__MAX_MANA = self.__mana
-        self.__magic_items = [{"name":"Lâmina de lumen", "price":0, "magic_atk" : 10, "magic_den" : 0, "cost_mana": 10, 'limit': 1}]
-        self.__inventory = [{"name" : "Poção de vida", "price": 0, 'limit': 5}]
-        self.__equip = [{"name":"Espada Longa", "price":0, "atk" : 15, "den" : 0, 'limit': 1}, {"name":"Escudo Básico", "price":0, "atk" : 0, "den" : 11, 'limit': 1}]   
+        self.__magic_items = Items.BASIC_MAGIC_ITEMS 
+        self.__inventory = Items.BASIC_ITEMS
+        self.__equip = Items.BASIC_EQUIP   
+        self.__weapons = Items.BASIC_WEAPONS
 
+    @property
+    def weapons(self):
+        return self.__weapons
     @property
     def MAX_MANA(self):
         return self.__MAX_MANA
@@ -124,25 +133,33 @@ class Player(Personagem):
 
     #Calculates the bonus attack from player's equipament
     def bonus_atk(self) -> int:
-        if len(self.equip)>0:
-            return sum([equip['atk'] for equip in self.equip])
+        if len(self.equip)>0 or len(self.weapons)>0:
+           re1 = sum([equip['atk'] for equip in self.equip])
+           re2 = sum([weapon['atk'] for weapon in self.weapons])
+           return re1 + re2
         else:
             return 0
     #Calculates the bonus magical atk from player's equipament
     def magic_atk(self) -> int:
-        if len(self.magic_items)>0:
-            return sum([magic_equip['magic_atk'] for magic_equip in self.magic_items])
+        if len(self.magic_items)>0  or len(self.weapons)>0:
+            re1 = sum([magic_equip['magic_atk'] for magic_equip in self.magic_items])
+            re2 = sum([weapon['magic_atk'] for weapon in self.weapons])
+            return re1 + re2
         else:
             return 0
     #Calculates the bonus attack from player's equipament
     def bonus_den(self) -> int:
-        if len(self.equip)>0:
-            return sum([equip['den'] for equip in self.equip])
+        if len(self.equip)>0 or len(self.weapons)>0:
+            re1 = sum([equip['den'] for equip in self.equip])
+            re2 = sum([weapon['den'] for weapon in self.weapons])
+            return re1 + re2
         else:
             return 0
     def bonus_magic_den(self) -> int:
-        if len(self.magic_items)>0:
-            return sum([equip['magic_atk'] for equip in self.magic_items])
+        if len(self.magic_items)>0 or len(self.weapons)>0:
+            re1 = sum([equip['magic_atk'] for equip in self.magic_items])
+            re2 = sum([weapon['magic_atk'] for weapon in self.weapons])
+            return re1 + re2
         else:
             return 0
      
@@ -163,7 +180,7 @@ class Player(Personagem):
     
     #Show player's inventory
     def invent(self):
-        sleep(2)
+        sleep(0.5)
         if len(self.inventory)>0:
             print("\n=== INVENTÁRIO ===\n")
             for item in self.inventory:
@@ -176,18 +193,20 @@ class Player(Personagem):
      #Show player's equipaments       
     def equipament(self):
         sleep(2)
-        if len(self.equip or self.magic_items)>0:
+        if len(self.equip)>0 or len(self.magic_items)>0 or len(self.weapons)>0:
             print("\n=== EQUIPAMENTO ===\n")
             for equip in self.equip:
                 print(f"   {equip['name']}   ")
             for magic in self.magic_items:
                 print(f"   {magic['name']}   ")
+            for weapon in self.weapons:
+                print(f"   {weapon['name']}   ")
             print("\n=================\n")
         else:
             sleep(1.5)
             print("\nVocê não tem itens equipados.\n")
+
                                     
-                
     def buy_item(self, item):
         print(f"\nSaldo atual: {self.money}\n")
         items_limit = lambda item: sum([1 for equip in self.inventory if equip['name'] == item['name']])
@@ -216,6 +235,24 @@ class Player(Personagem):
                 sleep(1.5)
                 print(f"\nVocê comprou {item['name']}", end="\n")
                 self.equip.append(item)
+                self.equipament()
+            else:
+                sleep(1)
+                print(f"\n[!] Saldo insuficiente, faltam:{item['price'] - self.money}\n moedas")
+        else:
+            sleep(0.5)
+            print(f"\nLimite de compra do item {item['name']} atingido. Máximo: {item['limit']}\n")
+              
+    def buy_weapon(self, item):
+        print(f"\nSaldo atual: {self.money}\n")
+        equips_limit = lambda item: sum([1 for equip in self.weapons if equip['name'] == item['name']])
+        max_limit = equips_limit(item)
+        if max_limit < item['limit']:
+            if(self.money >= item['price']):
+                self.money -= item['price']
+                sleep(1.5)
+                print(f"\nVocê comprou {item['name']}", end="\n")
+                self.weapons.append(item)
                 self.equipament()
             else:
                 sleep(1)
