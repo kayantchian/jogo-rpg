@@ -75,7 +75,7 @@ class Player(Personagem):
         self.__mana = 10
         self.__AGE = age
         self.__CLASS = classe
-        self.__money = 350
+        self.__money = 950
         self.__xp = 10
         self.__MAX_MANA = self.__mana
         self.__magic_items = Items.BASIC_MAGIC_ITEMS 

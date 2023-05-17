@@ -2,8 +2,7 @@ class Items():
     BASIC_EQUIP = [{"name":"Escudo Básico", "price":0, "atk" : 0, "den" : 11, "magic_atk" : 0, "magic_den": 0,  'limit': 1}]    
     BASIC_ITEMS = [{"name" : "Poção de vida", "price": 0, 'limit': 5}]
     BASIC_MAGIC_ITEMS = [{"name":"Lâmina de lumen", "price":0, "magic_atk" : 10, "magic_den" : 0, "cost_mana": 10, 'limit': 1}]
-    BASIC_WEAPONS = [{"name":"Espada Longa", "price":0, "atk" : 15, "den" : 0, "magic_atk" : 0, "magic_den": 0,  'limit': 1}]
-    
+    BASIC_WEAPONS = [{"name":"Espada Longa", "price":0, "atk" : 15, "den" : 0, "magic_atk" : 0, "magic_den": 0,  'limit': 1}]    
     
     ITEMS = [{"name" : "Poção de vida", "price": 15, 'limit': 5}, {"name" : "Anjo Guardião", "price" : 100, 'limit': 1}]
     
@@ -16,5 +15,4 @@ class Items():
                     {"name":"Chamado do Carrasco", "price":105, "atk" : 12, "den" : 13, "magic_atk" : 0, "magic_den": 0,  'limit': 1},                 
                     ]
     
-
-    MÁGICOS = []
+    MAGICOS = []

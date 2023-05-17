@@ -17,7 +17,7 @@ def level1(player):
         print(f"\nDepois de ter derrotado {enemy.name}, você continua sua caminhada pela floresta.")
         player.hp += 30
         print(f"Você recupera 35 de HP. {player.hp}")
-        if(random.random() <= 0.25):
+        if(random() <= 0.45):
             sleep(1.5)
             enemy = Enemy(random.choice(ENEMY_FLORESTA), *perform_enemy_creation("normal")) 
             surprise_atk = randint(5,10)

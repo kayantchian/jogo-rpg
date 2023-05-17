@@ -13,6 +13,7 @@ def game() -> bool:
     loja = Loja()
     op = True
     while(op):
+        sleep(0.7)
         print("", end="\n")
         moviment = inquirer.select(
             message="Onde quer ir?\n",
@@ -31,15 +32,32 @@ def game() -> bool:
             level1(player)
         elif(moviment=="Loja"):
             print(f"\nSaldo atual: {player.money}\n")
-            categoria = inquirer.select(
-                message="Selecione uma opção da Loja:",
-                choices=["Itens Mágicos","Equipamentos", "Armas",Choice(value=False, name="Sair"), ]).execute()
-            if(categoria == "Itens Mágicos"):
-                player.buy_item(loja.menu(categoria))
-            elif(categoria == "Equipamentos"):
-                player.buy_equip(loja.menu(categoria))
-            elif(categoria == "Armas"):
-                player.buy_weapon(loja.menu(categoria))
+            op_loja = True
+            while(op_loja):
+                sleep(0.7)
+                print("", end="\n")
+                categoria = inquirer.select(
+                    message="Selecione uma opção da Loja:",
+                    choices=["Itens","Armadura", "Armas",Choice(value=False, name="Sair"), ]).execute()
+                if(categoria == "Itens"):
+                    selected = loja.menu(categoria)
+                    if(selected!=False):
+                        player.buy_item(selected)
+                elif(categoria == "Armadura"):
+                    selected = loja.menu(categoria)
+                    if(selected!=False):
+                        player.buy_item(selected)
+                elif(categoria == "Armas"):
+                    selected = loja.menu(categoria)
+                    if(selected!=False):
+                        player.buy_item(selected)
+                elif(categoria == "Armas Mágicas"):
+                    selected = loja.menu(categoria)
+                    if(selected!=False):
+                        player.buy_item(selected)
+                else:
+                    op_loja = False
+                    
         elif(moviment=="Inventário"):
             player.invent()
         elif(moviment=="Equipamento"):
