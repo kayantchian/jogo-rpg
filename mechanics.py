@@ -17,14 +17,14 @@ def anjo_guardiao(player) -> bool:
         return False
 
 
-def find_dict_by_value(items, key, value):
+def find_dict_by_value(items, key, value) -> dict:
     for item in items:
         if item.get(key) == value:
             return item
     return None
 
 
-def magic_item_choice(player):
+def magic_item_choice(player)  -> dict:
     print("\n")
     selected_item = inquirer.select(
         message="Selecione um item mágico\n",
@@ -34,7 +34,7 @@ def magic_item_choice(player):
     return item
 
 
-def weapon_item_choice(player):
+def weapon_item_choice(player) -> dict:
     print("\n")
     selected_item = inquirer.select(
         message="Selecione uma arma\n",
@@ -44,7 +44,7 @@ def weapon_item_choice(player):
     return item
 
 
-def shield_item_choice(player):
+def shield_item_choice(player) -> dict:
     print("\n")
     selected_item = inquirer.select(
         message="Selecione um item mágico\n",
@@ -53,6 +53,8 @@ def shield_item_choice(player):
     item = find_dict_by_value(player.shields, "name", selected_item[0])
     return item
 
+def exploration(player) -> dict:
+    pass
 
 def fight(player, enemy) -> bool:
     DEFENSE = 0
@@ -229,6 +231,10 @@ def fight(player, enemy) -> bool:
         player.den = player.MAX_DEN
         player.mana = player.MAX_MANA
         return True
+
+
+
+
 
 
 if (__name__ == "__main__"):
