@@ -248,9 +248,9 @@ def fight(player, enemy) -> bool:
         player.money += enemy.money
         sleep(0.7)
         print(f'[!] {enemy.xp} pontos de xp adquiridos! Atual: {player.xp}', end="\n")
-        sleep(0.5)
+        sleep(1.5)
         print(f'[$] {enemy.money} moedas adquiridas! Atual: {player.money}', end="\n")
-        sleep(2)
+        sleep(4)
         player.magic_den = player.MAGIC_MAX_DEN
         player.den = player.MAX_DEN
         player.mana = player.MAX_MANA
