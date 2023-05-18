@@ -38,7 +38,7 @@ def game() -> bool:
                 print("", end="\n")
                 categoria = inquirer.select(
                     message="Selecione uma opção da Loja:",
-                    choices=["Itens","Armadura", "Armas",Choice(value=False, name="Sair"), ]).execute()
+                    choices=["Itens","Armadura", "Armas", "Escudos", "Armas Mágicas",Choice(value=False, name="Sair"), ]).execute()
                 if(categoria == "Itens"):
                     selected = loja.menu(categoria)
                     if(selected!=False):
@@ -46,15 +46,19 @@ def game() -> bool:
                 elif(categoria == "Armadura"):
                     selected = loja.menu(categoria)
                     if(selected!=False):
-                        player.buy_item(selected)
+                        player.buy_equip(selected)
                 elif(categoria == "Armas"):
                     selected = loja.menu(categoria)
                     if(selected!=False):
-                        player.buy_item(selected)
+                        player.buy_weapon(selected)
+                elif(categoria == "Escudos"):
+                    selected = loja.menu(categoria)
+                    if(selected!=False):
+                        player.buy_shield(selected)
                 elif(categoria == "Armas Mágicas"):
                     selected = loja.menu(categoria)
                     if(selected!=False):
-                        player.buy_item(selected)
+                        player.buy_magic_weapon(selected)
                 else:
                     op_loja = False
                     

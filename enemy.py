@@ -34,15 +34,12 @@ def perform_enemy_creation(enemy_level) -> object:
 
 class Enemy(Personagem):
     def __init__(self, name, hp, atk, magic_atk, den, magic_den, xp, money, critical = 0):
-        super().__init__(hp, atk, den, magic_den, name)
+        super().__init__(hp, atk, den, magic_atk, magic_den, name)
         self.__name = name
         self.__xp = xp
         self.__money = money
         self.__critical_atk = critical
-        self.__magic_atk = magic_atk
-    @property
-    def magic_atk(self):
-        return self.__magic_atk
+        
     @property
     def critical_atk(self):
         return self.__critical_atk

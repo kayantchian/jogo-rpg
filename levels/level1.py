@@ -19,7 +19,7 @@ def level1(player):
         print(f"Você recupera 35 de HP. {player.hp}")
         if(random() <= 0.45):
             sleep(1.5)
-            enemy = Enemy(random.choice(ENEMY_FLORESTA), *perform_enemy_creation("normal")) 
+            enemy = Enemy(choice(ENEMY_FLORESTA), *perform_enemy_creation("normal")) 
             surprise_atk = randint(5,10)
             print(f"""Mas de repente um {enemy.name} e lhe ataca de surpresa!
                   Causando {surprise_atk} de dano crítico""")

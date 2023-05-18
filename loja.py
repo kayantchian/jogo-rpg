@@ -14,7 +14,7 @@ class Loja():
             if(categoria=="Itens"): 
                 sleep(0.5)
                 print("", end="\n") 
-                choices =  [f"{item['name']}: ${item['price']}" for item in Items.ITEMS] + ["Voltar"]
+                choices =  [f"{item['name']}:    ${item['price']}" for item in Items.ITEMS] + ["Voltar"]
                 selected = inquirer.select(
                     message="Selecione um item mágico\n",
                     choices= choices).execute()
@@ -27,7 +27,7 @@ class Loja():
             if(categoria=="Armadura"):
                 sleep(0.5)
                 print("", end="\n") 
-                choices = [f"{item['name']}: ${item['price']}" for item in Items.EQUIPAMENTOS] + ["Voltar"]
+                choices = [f"{item['name']}:    ${item['price']}    --> DEF: {item['den']} RESISTÊNCIA MÁGICA: {item['magic_den']}" for item in Items.EQUIPAMENTOS] + ["Voltar"]
                 selected = inquirer.select(
                     message="Selecione um item",
                     choices= choices).execute()
@@ -37,10 +37,23 @@ class Loja():
                     return item
                 else:
                     return False
+            if(categoria=="Escudos"):
+                sleep(0.5)
+                print("", end="\n") 
+                choices = [f"{item['name']}:    ${item['price']}    --> DEF: {item['den']} RESISTÊNCIA MÁGICA: {item['magic_den']}" for item in Items.ESCUDOS] + ["Voltar"]
+                selected = inquirer.select(
+                    message="Selecione um item",
+                    choices= choices).execute()
+                if(selected!="Voltar"):
+                    selected = selected.split(":", 1)  #get name of item in string
+                    item = find_dict_by_value(Items.ESCUDOS, "name",selected[0])
+                    return item
+                else:
+                    return False
             if(categoria=="Armas"):
                 sleep(0.5)
                 print("", end="\n") 
-                choices = [f"{item['name']}: ${item['price']}" for item in Items.ARMAS] + ["Voltar"]
+                choices = [f"{item['name']}:    ${item['price']}    --> ATK: {item['atk']} MAGIC ATK: {item['magic_atk']} " for item in Items.ARMAS] + ["Voltar"]
                 selected = inquirer.select(
                     message="Selecione um item",
                     choices=choices).execute()
@@ -53,7 +66,7 @@ class Loja():
             if(categoria=="Armas Mágicas"):
                 sleep(0.5)
                 print("", end="\n") 
-                choices = [f"{item['name']}: ${item['price']}" for item in Items.MAGICOS] + ["Voltar"]
+                choices = [f"{item['name']}:    ${item['price']}    --> MAGIC ATK:{item['magic_atk']} ATK: {item['atk']}" for item in Items.MAGICOS] + ["Voltar"]
                 selected = inquirer.select(
                     message="Selecione um item",
                     choices=choices).execute()
@@ -66,4 +79,4 @@ class Loja():
             
 if(__name__ == "__main__"):
     Loja = Loja()
-    print(Loja.menu("Itens Mágicos"))
+    (Loja.menu("Armas"))
