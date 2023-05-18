@@ -16,7 +16,7 @@ def credits() -> None:
         time.sleep(0.1)
     for x in range(1, 15):
         print("==", end="", flush=True)
-        time.sleep(0.1)
+        time.sleep(2)
     print("\n\n\n\n\n\n")
 def main():
     op = True
