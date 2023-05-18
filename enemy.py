@@ -8,8 +8,8 @@ def perform_enemy_creation(enemy_level) -> object:
         atk = randint(15,25)
         den = randint(10,20)
         magic_den = randint(5,10)
-        xp = randint(10,20)
-        money = randint(7,14)
+        xp = randint(25,45)
+        money = randint(44,70)
         critical_atk = randint(0,10)
         return hp, atk, magic_atk, den, magic_den, xp, money, critical_atk
     elif(enemy_level == "hard"):
@@ -18,8 +18,8 @@ def perform_enemy_creation(enemy_level) -> object:
         magic_atk = randint(10,25)
         den = randint(20,30)
         magic_den = randint(10,25)
-        xp = randint(20,50)
-        money = randint(25,50)
+        xp = randint(45,70)
+        money = randint(70,150)
         critical_atk = randint(0,25)
         return hp, atk, magic_atk, den, magic_den, xp, money, critical_atk
     elif(enemy_level == "easy"):
@@ -28,8 +28,8 @@ def perform_enemy_creation(enemy_level) -> object:
         atk = randint(9,15)
         den = randint(9,15)
         magic_den = randint(10,15)
-        xp = randint(5,10)
-        money = randint(1,7)
+        xp = randint(10,25)
+        money = randint(14,40)
         return hp, atk, magic_atk, den, magic_den, xp, money
 
 class Enemy(Personagem):
@@ -53,7 +53,7 @@ class Enemy(Personagem):
     def money(self):
         return self.__money
 
-ENEMY_CHOICES = ["atk", "magic_atk"]            
+ENEMY_CHOICES = ["atk", "magic_atk", "den"]            
 ENEMY_LEVELS = ['easy','normal']
 
 ENEMY_FLORESTA = ["Gárgula", "Ogro", "Troll", "Ciclope", "Gnol", "Goblin", "Kobolds"]

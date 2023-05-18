@@ -5,11 +5,11 @@ from InquirerPy.validator import EmptyInputValidator
 from player import *
 from enemy import *
 
-
-def anjo_guardiao(player) -> bool:
+    
+def use_item(player, item) -> bool:
     if (len(player.inventory) > 0):
         for item in player.inventory:
-            item.get('name') == "Anjo Guardião"
+            item.get('name') == item
             player.inventory.remove(item)
             return True
         return False
@@ -59,6 +59,8 @@ def exploration(player) -> dict:
 def fight(player, enemy) -> bool:
     DEFENSE = 0
     MAGIC_RESISTENCE = 0
+    ENEMY_DEFENSE = 0
+    ENEMY_MAGIC_RESISTENCE = 0
     print(f"\n Um(a) {enemy.name} se aproxima!\n")
     sleep(1)
     turn = random.choice([True, False])
@@ -82,14 +84,22 @@ def fight(player, enemy) -> bool:
             player_choice = inquirer.select(
                 message="Selecione uma opção:",
                 choices=["Atacar", "Magia", "Defender",
-                         "Item", "Passar a vez", "Fugir"],
+                         "Curar", "Passar a vez", "Fugir"],
             ).execute()
+            if(player_choice == "Curar"):
+                if(use_item(player,"Poção de vida")):
+                    player.hp = player.MAX_HP
+                    print("\nVocê se curou.")
+                else:
+                    print("\nVocê não possui poções")
+            
             # Magic damage
             if (player_choice == "Magia"):
                 magic_item = magic_item_choice(player)
                 if (player.mana >= magic_item['cost_mana']):
                     sleep(0.5)
                     magical_atk = magic_item['magic_atk'] + player.bonus_magic_atk()
+                    magical_atk -= (magical_atk*(ENEMY_MAGIC_RESISTENCE)/100)
                     player.mana -= magic_item['cost_mana']
                     if (magical_atk > enemy.magic_den):
                         enemy.magic_den -= magical_atk
@@ -110,6 +120,7 @@ def fight(player, enemy) -> bool:
             if (player_choice == "Atacar"):
                 attack_item = weapon_item_choice(player)
                 full_atk = player.atk + player.bonus_atk() + attack_item['atk']
+                full_atk -= (full_atk*(ENEMY_DEFENSE)/100)
                 if (full_atk > enemy.den):
                     enemy.den -= full_atk
                     print(f"\nVocê causou {full_atk} de dano!", end="\n")
@@ -143,6 +154,8 @@ def fight(player, enemy) -> bool:
         # Enemy's turn
         elif (turn == False):
             enemy_choice = random.choice(ENEMY_CHOICES)
+            ENEMY_DEFENSE = 0
+            ENEMY_MAGIC_RESISTENCE = 0
             # FISICAL ATTK ENEMY
             if (enemy_choice == "atk"):
                 if(DEFENSE>0):
@@ -194,12 +207,19 @@ def fight(player, enemy) -> bool:
                     sleep(0.5)
                     print(
                         f"Mas sua resistencia mágica foi reduzida para {player.magic_den}")
+            #ENEMY DEFENSE
+            elif(enemy_choice == "den"):
+                print(f"\n{enemy.name} se defendeu!")
+                ENEMY_DEFENSE = enemy.den
+                ENEMY_MAGIC_RESISTENCE = enemy.magic_den
+
+
 
         # Verifies if player is dead
         if player.hp <= 0:
             sleep(1.5)
             print("\nVocê morreu...")
-            if (anjo_guardiao(player)):  # Verifier is player has anjo guardiao in its inventory
+            if (use_item(player, "Anjo Guardião")):  # Verifier is player has anjo guardiao in its inventory
                 player.hp = player.MAX_HP
                 sleep(1.5)
                 print("Mas o Anjo Guardião ressuscitou você...\n")
@@ -221,15 +241,20 @@ def fight(player, enemy) -> bool:
 
     # Verifies if enemy is dead:
     if enemy.hp <= 0:
-        print(f"\n{enemy.name} morreu!")
+        sleep(0.5)
+        print(f"\nVocê matou {enemy.name}.")
         player.xp += enemy.xp
         player.money += enemy.money
-        print(f'{enemy.xp} pontos de xp adquiridos! Atual: {player.xp}', end="\n")
-        print(f'{enemy.money} moedas adquiridas! Atual: {player.money}', end="\n")
-
+        sleep(0.7)
+        print(f'[!] {enemy.xp} pontos de xp adquiridos! Atual: {player.xp}', end="\n")
+        sleep(0.5)
+        print(f'[$] {enemy.money} moedas adquiridas! Atual: {player.money}', end="\n")
+        sleep(2)
         player.magic_den = player.MAGIC_MAX_DEN
         player.den = player.MAX_DEN
         player.mana = player.MAX_MANA
+        player.hp += player.hp*0.3
+        player.level_up
         return True
 
 

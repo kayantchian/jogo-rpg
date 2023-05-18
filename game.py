@@ -18,7 +18,7 @@ def game() -> bool:
         moviment = inquirer.select(
             message="Onde quer ir?\n",
             choices=[
-                "Floresta",
+                "Começar jornada",
                 "Loja",
                 "Status",
                 "Inventário",
@@ -28,7 +28,7 @@ def game() -> bool:
         ).execute()
     
     
-        if(moviment=="Floresta"):
+        if(moviment=="Começar jornada"):
             level1(player)
         elif(moviment=="Loja"):
             print(f"\nSaldo atual: {player.money}\n")
