@@ -19,13 +19,22 @@ class Personagem():
         
     @property
     def MAGIC_MAX_DEN(self):
-        return self.__MAGIC_MAX_DEN     
+        return self.__MAGIC_MAX_DEN  
+    @MAGIC_MAX_DEN.setter
+    def MAGIC_MAX_DEN(self, new_magic_den):
+        self.__MAGIC_MAX_DEN = new_magic_den
     @property
     def MAX_DEN(self):
         return self.__MAX_DEN    
+    @MAX_DEN.setter
+    def MAX_DEN(self, new_den):
+        self.__MAX_DEN = new_den
     @property 
     def magic_atk(self):
         return self.__magic_atk
+    @magic_atk.setter
+    def magic_atk(self, new_atk):
+        self.__magic_atk=new_atk
     @property
     def magic_den(self):
         return self.__magic_den
@@ -43,6 +52,9 @@ class Personagem():
     @property
     def MAX_HP(self):
         return self.__MAX_HP
+    @MAX_HP.setter
+    def MAX_HP(self, new_hp):
+        self.__MAX_HP = new_hp
     @property
     def hp(self):
         return self.__hp
@@ -102,6 +114,9 @@ class Player(Personagem):
     @property
     def MAX_MANA(self):
         return self.__MAX_MANA
+    @MAX_MANA.setter
+    def MAX_MANA(self, new_mana):
+        self.__MAX_MANA = new_mana
     @property
     def magic_weapons(self):
         return self.__magic_weapons
@@ -248,23 +263,25 @@ class Player(Personagem):
         
     #Calculates the bonus defense from player's equipament
     def bonus_den(self) -> int:
-        if len(self.equip)>0 or len(self.weapons)>0 or len(self.magic_weapons)>0 or len(self.shields)>0:
+        #if len(self.equip)>0 or len(self.weapons)>0 or len(self.magic_weapons)>0 or len(self.shields)>0:
+        if len(self.equip)>0 or len(self.shields)>0:
             equip = sum([equip['den'] for equip in self.equip])
-            magic = sum([magic_equip['den'] for magic_equip in self.magic_weapons])
-            weapon = sum([weapon['den'] for weapon in self.weapons])
+            #magic = sum([magic_equip['den'] for magic_equip in self.magic_weapons])
+            #weapon = sum([weapon['den'] for weapon in self.weapons])
             shield = sum([shield['den'] for shield in self.shields])
-            return magic + weapon + shield + equip
+            return shield + equip
         else:
             return 0
         
      #Calculates the bonus magical defense from player's equipament   
     def bonus_magic_den(self) -> int:
-        if len(self.equip)>0 or len(self.weapons)>0 or len(self.magic_weapons)>0 or len(self.shields)>0:
+        #if len(self.equip)>0 or len(self.weapons)>0 or len(self.magic_weapons)>0 or len(self.shields)>0:
+        if len(self.equip)>0 or len(self.shields)>0:
             equip = sum([equip['magic_den'] for equip in self.equip])
-            magic = sum([magic_equip['magic_den'] for magic_equip in self.magic_weapons])
-            weapon = sum([weapon['magic_den'] for weapon in self.weapons])
+            #magic = sum([magic_equip['magic_den'] for magic_equip in self.magic_weapons])
+            #weapon = sum([weapon['magic_den'] for weapon in self.weapons])
             shield = sum([shield['magic_den'] for shield in self.shields])
-            return magic + weapon + shield + equip
+            return shield + equip
         else:
             return 0
      
@@ -275,6 +292,7 @@ class Player(Personagem):
     #Show player's status
     def status(self):
         print(f"""\n --- Você ---
+                | LEVEL: {self.level}
                 | HP: {self.hp}
                 | MANA: {self.mana}
                 | MAGIC ATK: {self.magic_atk} (Bonus: +{self.bonus_magic_atk()})

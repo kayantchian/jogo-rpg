@@ -210,8 +210,8 @@ def fight(player, enemy) -> bool:
             #ENEMY DEFENSE
             elif(enemy_choice == "den"):
                 print(f"\n{enemy.name} se defendeu!")
-                ENEMY_DEFENSE = enemy.den
-                ENEMY_MAGIC_RESISTENCE = enemy.magic_den
+                ENEMY_DEFENSE = enemy.MAX_DEN
+                ENEMY_MAGIC_RESISTENCE = enemy.MAGIC_MAX_DEN
 
 
 
@@ -243,7 +243,8 @@ def fight(player, enemy) -> bool:
     if enemy.hp <= 0:
         sleep(0.5)
         print(f"\nVocê matou {enemy.name}.")
-        player.xp += enemy.xp
+        player.xp += 200
+        player.level_up()
         player.money += enemy.money
         sleep(0.7)
         print(f'[!] {enemy.xp} pontos de xp adquiridos! Atual: {player.xp}', end="\n")
