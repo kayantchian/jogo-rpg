@@ -1,4 +1,4 @@
-from player import Personagem
+from character.player import Personagem
 from random import randint, choice
 
 def perform_enemy_creation(enemy_level) -> object:

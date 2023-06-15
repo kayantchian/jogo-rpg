@@ -4,9 +4,10 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 import time
 from random import choice
-from player import *
+from character.player import *
 from shop import Loja
 from levels.level1 import *
+import emoji
 
 def game() -> bool:
     player = Player(*perform_player_creation())

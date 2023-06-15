@@ -1,5 +1,5 @@
-from player import *
-from enemy import *
+from character.player import *
+from character.enemy import *
 from mechanics import *
 from InquirerPy import prompt
 from InquirerPy import inquirer

@@ -4,7 +4,7 @@ from InquirerPy.base.control import Choice
 from time import sleep
 import random
 from items import Items
-from skills import *
+from character.skills import *
 
 class Personagem():
     def __init__(self, hp, atk, den, magic_atk, magic_den, name):
@@ -461,7 +461,7 @@ def perform_player_creation() -> object:
     classe = inquirer.select(
         message="Classe:",
         choices=[
-            "Assassino"
+            "Assassino", "Clérigo","Bêbado"
             ],validate=lambda selection: len(selection) >= 1,
     invalid_message="Selecione uma opção!",
     ).execute()
@@ -472,7 +472,21 @@ def perform_player_creation() -> object:
         magic_atk = 0
         magic_den = 0
         return hp, atk, den, magic_atk, magic_den, name, age, classe, Assassino.SKILLS
-    
+    if(classe == "Clérigo"):
+        hp = 100
+        atk = 20
+        den = 25
+        magic_atk = 0
+        magic_den = 0
+        return hp, atk, den, magic_atk, magic_den, name, age, classe, Assassino.SKILLS
+    if(classe == "Bêbado"):
+        hp = 100
+        atk = 20
+        den = 25
+        magic_atk = 0
+        magic_den = 0
+        return hp, atk, den, magic_atk, magic_den, name, age, classe, Assassino.SKILLS
+
 if(__name__ == "__main__"):
     player = Player(*perform_player_creation())
     print(player.skills)

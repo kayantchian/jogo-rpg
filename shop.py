@@ -2,7 +2,7 @@ from InquirerPy import prompt
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
-from player import Player
+from character.player import Player
 from mechanics import find_dict_by_value
 from items import Items
 from time import sleep

@@ -2,8 +2,8 @@ from time import sleep
 import random
 from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator
-from player import *
-from enemy import *
+from character.player import *
+from character.enemy import *
 
     
 def use_item(player, item) -> bool:
@@ -140,9 +140,9 @@ def fight(player, enemy) -> bool:
                     print(
                         f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
 
-            if(player_choice == "Habiliade"):
+            if(player_choice == "Habilidade"):
                 skill = skill_choice(player)
-                skill['skill'](enemy)
+                skill['skill'](player, enemy)
 
             if (player_choice == "Defender"):
                 defense_item = shield_item_choice(player)
