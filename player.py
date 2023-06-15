@@ -4,6 +4,7 @@ from InquirerPy.base.control import Choice
 from time import sleep
 import random
 from items import Items
+from skills import *
 
 class Personagem():
     def __init__(self, hp, atk, den, magic_atk, magic_den, name):
@@ -88,11 +89,12 @@ class Personagem():
             self.__den = 0
             
 class Player(Personagem):
-    def __init__(self, hp, atk, den, magic_atk, magic_den, name, age, classe):
+    def __init__(self, hp, atk, den, magic_atk, magic_den, name, age, classe, skills):
         super().__init__(hp, atk, den, magic_atk, magic_den, name)
         #Player's stats
+        self.__skills = skills
         self.__level = 1
-        self.__mana = 10
+        self.__mana = 50
         self.__AGE = age
         self.__CLASS = classe
         self.__money = 0
@@ -104,7 +106,9 @@ class Player(Personagem):
         self.__equip = Items.BASIC_EQUIP   
         self.__weapons = Items.BASIC_WEAPONS
         self.__shields = Items.BASIC_SHIELDS
-    
+    @property
+    def skills(self):
+        return self.__skills
     @property
     def shields(self):
         return self.__shields
@@ -293,12 +297,12 @@ class Player(Personagem):
     def status(self):
         print(f"""\n --- Você ---
                 | LEVEL: {self.level}
-                | HP: {self.hp}
+                | HP: {self.hp:.2f}
                 | MANA: {self.mana}
-                | MAGIC ATK: {self.magic_atk} (Bonus: +{self.bonus_magic_atk()})
-                | ATK: {self.atk} (Bonus: +{self.bonus_atk()})
-                | DEF: {self.den} (Bonus: +{self.bonus_den()})
-                | RESISTÊNCIA MÁGICA: {self.magic_den} (Bonus: +{self.bonus_magic_den()})""")
+                | MAGIC ATK: {self.magic_atk:.2f} (Bonus: +{self.bonus_magic_atk()})
+                | ATK: {self.atk:.2f} (Bonus: +{self.bonus_atk()})
+                | DEF: {self.den:.2f} (Bonus: +{self.bonus_den()})
+                | RESISTÊNCIA MÁGICA: {self.magic_den:.2f} (Bonus: +{self.bonus_magic_den()})""")
         print("", end="\n")
     
     #Show player's inventory
@@ -457,38 +461,18 @@ def perform_player_creation() -> object:
     classe = inquirer.select(
         message="Classe:",
         choices=[
-            "Humano",
-            "Orc", "Elfo"
+            "Assassino"
             ],validate=lambda selection: len(selection) >= 1,
     invalid_message="Selecione uma opção!",
     ).execute()
-    if(classe == "Humano"):
+    if(classe == "Assassino"):
         hp = 100
         atk = 20
         den = 25
         magic_atk = 0
         magic_den = 0
-        return Player(hp, atk, den, magic_atk, magic_den, name, age, classe)
-    elif(classe=="Orc"):
-        hp = 250
-        atk = 25
-        den = 5
-        magic_atk = 0
-        magic_den = 5
-        return Player(hp, atk, den, magic_atk, magic_den, name, age, classe)
-    elif(classe=="Elfo"):
-        hp = 100
-        atk = 15
-        den = 0
-        magic_atk = 15
-        magic_den = 10
-        return Player(hp, atk, den, magic_atk, magic_den, name, age, classe)
+        return hp, atk, den, magic_atk, magic_den, name, age, classe, Assassino.SKILLS
     
 if(__name__ == "__main__"):
-    magic_weapons = [{"name":"Lâmina de lumen", "price":0, "magic_atk" : 10, "magic_den" : 0, "cost_mana": 10, 'limit': 1}]
-    def bonus_atk(lista) -> int:
-        if len(lista)>0:
-            return sum([equip['magic_atk'] for equip in lista])
-        else:
-            return 0
-    print(bonus_atk(magic_weapons))
+    player = Player(*perform_player_creation())
+    print(player.skills)

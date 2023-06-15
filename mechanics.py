@@ -33,6 +33,14 @@ def magic_item_choice(player)  -> dict:
     item = find_dict_by_value(player.magic_weapons, "name", selected_item[0])
     return item
 
+def skill_choice(player) -> dict:
+    print("\n")
+    selected_item = inquirer.select(
+        message="Selecione uma habilidade\n",
+        choices=[f"{skill['name']}: MANA -> {skill['cost_mana']}" for skill in player.skills]).execute()
+    selected_item = selected_item.split(":", 1)  # get name of item in string
+    item = find_dict_by_value(player.skills, "name", selected_item[0])
+    return item
 
 def weapon_item_choice(player) -> dict:
     print("\n")
@@ -67,12 +75,12 @@ def fight(player, enemy) -> bool:
     while enemy.hp > 0:
         turn = not turn
         print(f""" --- {enemy.name} ---
-              | HP: {enemy.hp}
-              | ATK: {enemy.atk}
-              | MAGIC ATK: {enemy.magic_atk}
-              | DEF: {enemy.den}
-              | RESISTÊNCIA MÁGICA: {enemy.magic_den}
-              | ATAQUE CRÍTICO: {enemy.critical_atk}%\n""")
+              | HP: {enemy.hp:.2f}
+              | ATK: {enemy.atk:.2f}
+              | MAGIC ATK: {enemy.magic_atk:.2f}
+              | DEF: {enemy.den:.2f}
+              | RESISTÊNCIA MÁGICA: {enemy.magic_den:.2f}
+              | ATAQUE CRÍTICO: {enemy.critical_atk:.2f}%\n""")
         player.status()
         sleep(1.5)
         # Player's turn
@@ -83,7 +91,7 @@ def fight(player, enemy) -> bool:
             sleep(1)
             player_choice = inquirer.select(
                 message="Selecione uma opção:",
-                choices=["Atacar", "Magia", "Defender",
+                choices=["Atacar", "Magia", "Habilidade", "Defender",
                          "Curar", "Passar a vez", "Fugir"],
             ).execute()
             if(player_choice == "Curar"):
@@ -131,6 +139,10 @@ def fight(player, enemy) -> bool:
                     enemy.den -= full_atk
                     print(
                         f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
+
+            if(player_choice == "Habiliade"):
+                skill = skill_choice(player)
+                skill['skill'](enemy)
 
             if (player_choice == "Defender"):
                 defense_item = shield_item_choice(player)
@@ -264,12 +276,12 @@ def fight(player, enemy) -> bool:
 
 
 if (__name__ == "__main__"):
-    lista = [{"name": "Lâmina de lumen", "price": 0, "magic_atk": 10,
-              "magic_den": 0, "cost_mana": 10, 'limit': 1}]
+    lista = [{"name":"Shuriken_laminada", "cost_mana": 15, "skill": "shuriken_laminada"},
+              {"name":"Corte Sombrio", "cost_mana": 25, "skill": "corte_sombrio"}]
     selected_item = inquirer.select(
-        message="Selecione um item mágico\n",
-        choices=[f"{item['name']}: MANA -> {item['cost_mana']}" for item in lista]).execute()
+        message="Selecione uma habilidade\n",
+        choices=[f"{skill['name']}: MANA -> {skill['cost_mana']}" for skill in lista]).execute()
     selected_item = selected_item.split(":", 1)  # get name of item in string
-    print(selected_item)
     item = find_dict_by_value(lista, "name", selected_item[0])
-    print(item)
+    print(item['name'])
+

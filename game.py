@@ -5,11 +5,11 @@ from InquirerPy.separator import Separator
 import time
 from random import choice
 from player import *
-from loja import Loja
+from shop import Loja
 from levels.level1 import *
 
 def game() -> bool:
-    player = perform_player_creation()
+    player = Player(*perform_player_creation())
     loja = Loja()
     op = True
     while(op):
