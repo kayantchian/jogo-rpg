@@ -7,7 +7,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 import time
 from random import choice, random
-
+from levels.quests import *
 
 def level1(player):
     print(f"\nVocê entrou na floresta...\n")
@@ -17,6 +17,8 @@ def level1(player):
         print(f"\nDepois de ter derrotado {enemy.name}, você continua sua caminhada pela floresta.")
         player.hp += 30
         print(f"Você recupera 35 de HP. {player.hp}")
+        if(random() <= 0.85):
+            quest_carlos(player)
         if(random() <= 0.45):
             sleep(1.5)
             enemy = Enemy(choice(ENEMY_FLORESTA), *perform_enemy_creation("normal")) 
