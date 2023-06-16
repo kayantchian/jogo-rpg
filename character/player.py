@@ -478,14 +478,14 @@ def perform_player_creation() -> object:
         den = 25
         magic_atk = 0
         magic_den = 0
-        return hp, atk, den, magic_atk, magic_den, name, age, classe, Assassino.SKILLS
+        return hp, atk, den, magic_atk, magic_den, name, age, classe, Clerigo.SKILLS
     if(classe == "Bêbado"):
         hp = 100
         atk = 20
         den = 25
         magic_atk = 0
         magic_den = 0
-        return hp, atk, den, magic_atk, magic_den, name, age, classe, Assassino.SKILLS
+        return hp, atk, den, magic_atk, magic_den, name, age, classe, Bebado.SKILLS
 
 if(__name__ == "__main__"):
     player = Player(*perform_player_creation())

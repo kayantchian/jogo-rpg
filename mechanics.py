@@ -28,38 +28,51 @@ def magic_item_choice(player)  -> dict:
     print("\n")
     selected_item = inquirer.select(
         message="Selecione um item mágico\n",
-        choices=[f"{item['name']}: MANA -> {item['cost_mana']}, MAGIC ATK -> {item['magic_atk']}" for item in player.magic_weapons]).execute()
-    selected_item = selected_item.split(":", 1)  # get name of item in string
-    item = find_dict_by_value(player.magic_weapons, "name", selected_item[0])
-    return item
+        choices=[f"{item['name']}: MANA -> {item['cost_mana']}, MAGIC ATK -> {item['magic_atk']}" for item in player.magic_weapons] + ["Voltar"]
+        ).execute()
+    if(selected_item != "Voltar"):
+        selected_item = selected_item.split(":", 1)  # get name of item in string
+        item = find_dict_by_value(player.magic_weapons, "name", selected_item[0])
+        return item
+    else:
+        return False
 
 def skill_choice(player) -> dict:
     print("\n")
     selected_item = inquirer.select(
         message="Selecione uma habilidade\n",
-        choices=[f"{skill['name']}: MANA -> {skill['cost_mana']}" for skill in player.skills]).execute()
-    selected_item = selected_item.split(":", 1)  # get name of item in string
-    item = find_dict_by_value(player.skills, "name", selected_item[0])
-    return item
+        choices=[f"{skill['name']}: MANA -> {skill['cost_mana']}" for skill in player.skills] + ["Voltar"]
+        ).execute()
+    if(selected_item != "Voltar"):
+        selected_item = selected_item.split(":", 1)  # get name of item in string
+        item = find_dict_by_value(player.skills, "name", selected_item[0])
+        return item
+    else:
+        return False
 
 def weapon_item_choice(player) -> dict:
     print("\n")
     selected_item = inquirer.select(
         message="Selecione uma arma\n",
-        choices=[f"{item['name']}: ATK -> {item['atk']}" for item in player.weapons]).execute()
-    selected_item = selected_item.split(":", 1)  # get name of item in string
-    item = find_dict_by_value(player.weapons, "name", selected_item[0])
-    return item
-
+        choices=[f"{item['name']}: ATK -> {item['atk']}" for item in player.weapons] + ["Voltar"]).execute()
+    if(selected_item != "Voltar"):
+        selected_item = selected_item.split(":", 1)  # get name of item in string
+        item = find_dict_by_value(player.weapons, "name", selected_item[0])
+        return item
+    else:
+        return False
 
 def shield_item_choice(player) -> dict:
     print("\n")
     selected_item = inquirer.select(
         message="Selecione um item mágico\n",
-        choices=[f"{item['name']}: DEF -> {item['den']}, RESISTÊNCIA MÁGICA: -> {item['magic_den']}" for item in player.shields]).execute()
-    selected_item = selected_item.split(":", 1)  # get name of item in string
-    item = find_dict_by_value(player.shields, "name", selected_item[0])
-    return item
+        choices=[f"{item['name']}: DEF -> {item['den']}, RESISTÊNCIA MÁGICA: -> {item['magic_den']}" for item in player.shields] + ["Voltar"]).execute()
+    if(selected_item != "Voltar"):
+        selected_item = selected_item.split(":", 1)  # get name of item in string
+        item = find_dict_by_value(player.shields, "name", selected_item[0])
+        return item
+    else: 
+        return False
 
 def exploration(player) -> dict:
     pass
@@ -70,25 +83,29 @@ def fight(player, enemy) -> bool:
     ENEMY_DEFENSE = 0
     ENEMY_MAGIC_RESISTENCE = 0
     print(f"\n Um(a) {enemy.name} se aproxima!\n")
-    sleep(1)
+    sleep(0.5)
+    player_choose_op = True
     turn = random.choice([True, False])
     while enemy.hp > 0:
-        turn = not turn
-        print(f""" --- {enemy.name} ---
-              | HP: {enemy.hp:.2f}
-              | ATK: {enemy.atk:.2f}
-              | MAGIC ATK: {enemy.magic_atk:.2f}
-              | DEF: {enemy.den:.2f}
-              | RESISTÊNCIA MÁGICA: {enemy.magic_den:.2f}
-              | ATAQUE CRÍTICO: {enemy.critical_atk:.2f}%\n""")
-        player.status()
-        sleep(1.5)
+        if(player_choose_op):
+            turn = not turn
+            sleep(1.5)
+            print(f""" --- {enemy.name} ---
+                | HP: {enemy.hp:.2f}
+                | ATK: {enemy.atk:.2f}
+                | MAGIC ATK: {enemy.magic_atk:.2f}
+                | DEF: {enemy.den:.2f}
+                | RESISTÊNCIA MÁGICA: {enemy.magic_den:.2f}
+                | ATAQUE CRÍTICO: {enemy.critical_atk:.2f}%\n""")
+            player.status()
+        sleep(2)
         # Player's turn
         if (turn == True):
             DEFENSE = 0
             MAGIC_RESISTENCE = 0
             player.recuperacao_mana()
             sleep(1)
+            print("\n")
             player_choice = inquirer.select(
                 message="Selecione uma opção:",
                 choices=["Atacar", "Magia", "Habilidade", "Defender",
@@ -97,58 +114,87 @@ def fight(player, enemy) -> bool:
             if(player_choice == "Curar"):
                 if(use_item(player,"Poção de vida")):
                     player.hp = player.MAX_HP
-                    print("\nVocê se curou.")
+                    print(f"\nVocê se curou.\nHP atual: {player.hp}")
                 else:
                     print("\nVocê não possui poções")
             
             # Magic damage
             if (player_choice == "Magia"):
                 magic_item = magic_item_choice(player)
-                if (player.mana >= magic_item['cost_mana']):
-                    sleep(0.5)
-                    magical_atk = magic_item['magic_atk'] + player.bonus_magic_atk()
-                    magical_atk -= (magical_atk*(ENEMY_MAGIC_RESISTENCE)/100)
-                    player.mana -= magic_item['cost_mana']
-                    if (magical_atk > enemy.magic_den):
-                        enemy.magic_den -= magical_atk
-                        print(
-                            f"\nVocê causou {magical_atk} de dano mágico!", end="\n")
-                        enemy.hp = enemy.hp - (magical_atk-enemy.magic_den)
+                if(magic_item): #Magic weapon choice
+                    player_choose_op = True
+                    if (player.mana >= magic_item['cost_mana']):
+                        sleep(0.5)
+                        magical_atk = magic_item['magic_atk'] + player.bonus_magic_atk()
+                        magical_atk -= (magical_atk*(ENEMY_MAGIC_RESISTENCE)/100)
+                        player.mana -= magic_item['cost_mana']
+                        if (magical_atk > enemy.magic_den):
+                            enemy.magic_den -= magical_atk
+                            print(
+                                f"\nVocê causou {magical_atk} de dano mágico!", end="\n")
+                            enemy.hp = enemy.hp - (magical_atk-enemy.magic_den)
+                        else:
+                            print(
+                                f"Seu ataque não causou dano em {enemy.name}", end="\n")
+                            enemy.magic_den -= magical_atk
+                            print(
+                                f"Mas a resistência mágica de {enemy.name} foi reduzida para {enemy.den}")
                     else:
                         print(
-                            f"Seu ataque não causou dano em {enemy.name}", end="\n")
-                        enemy.magic_den -= magical_atk
-                        print(
-                            f"Mas a resistência mágica de {enemy.name} foi reduzida para {enemy.den}")
-                else:
-                    print(
-                        f"\n Mana insuficiente. Requer {magic_item['cost_mana'] - player.mana} de mana.\n")
-
+                            f"\n Mana insuficiente. Requer {magic_item['cost_mana'] - player.mana} de mana.\n")
+                else: #If player didn't chose a magic weapon.
+                    player_choose_op = False
+                    pass
             # Fisical damage
             if (player_choice == "Atacar"):
                 attack_item = weapon_item_choice(player)
-                full_atk = player.atk + player.bonus_atk() + attack_item['atk']
-                full_atk -= (full_atk*(ENEMY_DEFENSE)/100)
-                if (full_atk > enemy.den):
-                    enemy.den -= full_atk
-                    print(f"\nVocê causou {full_atk} de dano!", end="\n")
-                    enemy.hp = enemy.hp - full_atk
+                if(attack_item): #Verifies if player choose an item
+                    player_choose_op = True
+                    full_atk = player.atk + player.bonus_atk() + attack_item['atk']
+                    full_atk -= (full_atk*(ENEMY_DEFENSE)/100)
+                    if (full_atk > enemy.den):
+                        enemy.den -= full_atk
+                        print(f"\nVocê causou {full_atk} de dano!", end="\n")
+                        enemy.hp = enemy.hp - full_atk
+                    else:
+                        print(
+                            f"\nSeu ataque não causou dano em {enemy.name}", end="\n")
+                        enemy.den -= full_atk
+                        print(
+                            f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
                 else:
-                    print(
-                        f"\nSeu ataque não causou dano em {enemy.name}", end="\n")
-                    enemy.den -= full_atk
-                    print(
-                        f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
+                    player_choose_op = False
+                    pass
 
             if(player_choice == "Habilidade"):
                 skill = skill_choice(player)
-                skill['skill'](player, enemy)
-
+                if(skill): #Verifies if player choose an skill
+                    player_choose_op = True
+                    damage = skill['skill'](player, enemy)
+                    full_atk = damage*(ENEMY_DEFENSE)/100
+                    if (full_atk > enemy.den):
+                        enemy.den -= full_atk
+                        print(f"\nVocê causou {full_atk} de dano!", end="\n")
+                        enemy.hp = enemy.hp - full_atk
+                    else:
+                        print(
+                            f"\nSeu ataque não causou dano em {enemy.name}", end="\n")
+                        enemy.den -= full_atk
+                        print(
+                            f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
+                else:
+                    player_choose_op = False
+                    pass
             if (player_choice == "Defender"):
                 defense_item = shield_item_choice(player)
-                DEFENSE = defense_item['den']
-                MAGIC_RESISTENCE = defense_item['magic_den']
-                print(f"\nVocê usou {defense_item['name']} para se defender!")
+                if(defense_item): #Verifies if player choose a defense item
+                    player_choose_op = True
+                    DEFENSE = defense_item['den']
+                    MAGIC_RESISTENCE = defense_item['magic_den']
+                    print(f"\nVocê usou {defense_item['name']} para se defender!")
+                else:
+                    player_choose_op = False
+                    pass
 
             elif (player_choice == "Fugir"):
                 if random.random() <= 0.25:
