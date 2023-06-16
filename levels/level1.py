@@ -19,6 +19,7 @@ def level1(player):
         print(f"Você recupera 35 de HP. {player.hp}")
         if(random() <= 0.85):
             quest_carlos(player)
+            print("\nVocê continua a caminhada...\n")
         if(random() <= 0.45):
             sleep(1.5)
             enemy = Enemy(choice(ENEMY_FLORESTA), *perform_enemy_creation("normal")) 

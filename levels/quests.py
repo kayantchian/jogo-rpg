@@ -31,7 +31,7 @@ def quest_carlos(player):
         print(f"\n{npc} te passa o endereço da casa do aluno suspeito, e você caminha até lá", end="", flush=True)
         enemy = Enemy("Eduardo, o Papaizão", 600, 25, 20, 45, 15, 100, 150, 15)
         sleep(5)
-        print(f"\n{enemy.name} o que faz aqui na minha casa?")
+        print(f"\n\n{enemy.name} -- o que faz aqui na minha casa?")
         sleep(2)
         print(f"\n(Você) -- Vim pegar o malbec do {npc}. Dê-me agora!")
         sleep(2.5)
@@ -49,9 +49,15 @@ def quest_carlos(player):
             pass
         if(qst=="Sim"):
             fight(player, enemy)
+            print(f"\n{npc} -- Obrigado por devolver meu malbec!\n")
+            print(f"\n{npc} -- Quer saber? Pode ficar com ele! Você merece", end="", flush=True)
+            ponto()
+            sleep(2)
+            perfume = {"name":"Perfume Malbec", "price":0, "atk" : 35, "den" : 0, "magic_atk" : 0, "magic_den": 0,  'limit': 1}
+            player.weapons.append(perfume)
     if(answer == "Não"):
         print(f"{npc} -- Poxa")
         ponto()
         pass
 if(__name__ == "__main__"):
-    quest_carlos()
+    pass     

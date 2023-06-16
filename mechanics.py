@@ -171,7 +171,7 @@ def fight(player, enemy) -> bool:
                 if(skill): #Verifies if player choose an skill
                     player_choose_op = True
                     damage = skill['skill'](player, enemy)
-                    full_atk = damage*(ENEMY_DEFENSE)/100
+                    full_atk = damage*(ENEMY_MAGIC_RESISTENCE)/100
                     if (full_atk > enemy.den):
                         enemy.den -= full_atk
                         print(f"\nVocê causou {full_atk} de dano!", end="\n")

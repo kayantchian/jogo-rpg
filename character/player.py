@@ -112,9 +112,22 @@ class Player(Personagem):
     @property
     def shields(self):
         return self.__shields
+    @shields.setter
+    def shields(self, new_shield):
+        self.__shields.append(new_shield)
     @property
     def weapons(self):
         return self.__weapons
+    @weapons.setter
+    def weapons(self, new_weapon):
+        self.__weapons.append(new_weapon)
+    @property
+    def equip(self):
+        return self.__equip
+    @equip.setter
+    def equip(self, new_equip):
+        self.__equip.append(new_equip)
+
     @property
     def MAX_MANA(self):
         return self.__MAX_MANA
@@ -135,15 +148,13 @@ class Player(Personagem):
             self.__mana = 0
         elif(new_mana >= self.MAX_MANA):
             self.__mana = self.MAX_MANA
-    @property
-    def equip(self):
-        return self.__equip
+    
     @property
     def inventory(self):
         return self.__inventory
     @inventory.setter
-    def inventory(self, new_inventory):
-        self.inventory = new_inventory
+    def inventory(self, item):
+        self.inventory.append(item)
     @property
     def money(self):
         return self.__money
@@ -466,21 +477,21 @@ def perform_player_creation() -> object:
     invalid_message="Selecione uma opção!",
     ).execute()
     if(classe == "Assassino"):
-        hp = 100
-        atk = 20
-        den = 25
-        magic_atk = 0
+        hp = 200
+        atk = 30
+        den = 10
+        magic_atk = 15
         magic_den = 0
         return hp, atk, den, magic_atk, magic_den, name, age, classe, Assassino.SKILLS
     if(classe == "Clérigo"):
-        hp = 100
-        atk = 20
+        hp = 250
+        atk = 10
         den = 25
-        magic_atk = 0
-        magic_den = 0
+        magic_atk = 45
+        magic_den = 40
         return hp, atk, den, magic_atk, magic_den, name, age, classe, Clerigo.SKILLS
     if(classe == "Bêbado"):
-        hp = 100
+        hp = 300
         atk = 20
         den = 25
         magic_atk = 0
