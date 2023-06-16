@@ -172,9 +172,9 @@ class Player(Personagem):
     
     #level up
     def level_up(self):
-        if self.xp >= 0 and self.xp <= 100:
+        if self.xp >= 0 and self.xp <= 150:
             self.level = 1
-        elif self.xp > 100 and self.xp <= 200:
+        elif self.xp > 150 and self.xp <= 250:
             self.level = 2
             self.MAX_HP += self.MAX_HP*0.5
             self.atk += self.atk*0.3
@@ -182,7 +182,7 @@ class Player(Personagem):
             self.magic_atk += 10
             self.MAX_MANA += 10
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 200 and self.xp <= 300:
+        elif self.xp > 250 and self.xp <= 350:
             self.level = 3
             self.atk += self.atk*0.3
             self.MAX_HP += self.MAX_HP*0.5
@@ -190,7 +190,7 @@ class Player(Personagem):
             self.magic_atk += self.magic_atk * 0.2
             self.MAX_MANA += self.MAX_MANA*0.5
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 300 and self.xp <= 400:
+        elif self.xp > 350 and self.xp <= 450:
             self.level = 4
             self.MAX_HP += self.MAX_HP*0.75
             self.atk += self.atk*0.3
@@ -198,7 +198,7 @@ class Player(Personagem):
             self.magic_atk += self.magic_atk * 0.2
             self.MAX_MANA += self.MAX_MANA*0.5
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 400 and self.xp <= 500:
+        elif self.xp > 450 and self.xp <= 550:
             self.level = 5
             self.MAX_HP += self.MAX_HP*0.75
             self.atk += self.atk*0.3
@@ -206,7 +206,7 @@ class Player(Personagem):
             self.magic_atk += self.magic_atk * 0.2
             self.MAX_MANA += self.MAX_MANA*0.5
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 500 and self.xp <= 600:
+        elif self.xp > 550 and self.xp <= 650:
             self.level = 6
             self.MAX_HP += self.MAX_HP*0.75
             self.atk += self.atk*0.3
@@ -214,7 +214,7 @@ class Player(Personagem):
             self.magic_atk += self.magic_atk * 0.2
             self.MAX_MANA += self.MAX_MANA*0.5
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 600 and self.xp <= 700:
+        elif self.xp > 650 and self.xp <= 750:
             self.level = 7
             self.MAX_HP += self.MAX_HP*0.75
             self.atk += self.atk*0.3
@@ -222,7 +222,7 @@ class Player(Personagem):
             self.magic_atk += self.magic_atk * 0.2
             self.MAX_MANA += self.MAX_MANA*0.5
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 700 and self.xp <= 800:
+        elif self.xp > 750 and self.xp <= 850:
             self.level = 8
             self.MAX_HP += self.MAX_HP*0.75
             self.atk += self.atk*0.3
@@ -230,7 +230,7 @@ class Player(Personagem):
             self.magic_atk += self.magic_atk * 0.2
             self.MAX_MANA += self.MAX_MANA*0.5
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 800 and self.xp <= 900:
+        elif self.xp > 850 and self.xp <= 950:
             self.level = 9
             self.MAX_HP += self.MAX_HP*0.80
             self.atk += self.atk*0.3
@@ -238,7 +238,7 @@ class Player(Personagem):
             self.magic_atk += self.magic_atk * 0.2
             self.MAX_MANA += self.MAX_MANA*0.5
             print(f"[!] você subiu de nível: {self.level}")
-        elif self.xp > 900 and self.xp <= 1000:
+        elif self.xp > 950 and self.xp <= 1000:
             self.level = 10
             self.MAX_HP += self.MAX_HP
             self.atk += self.atk*0.3
