@@ -261,42 +261,38 @@ class Player(Personagem):
     
     #Calculates the bonus attack from player's equipament
     def bonus_atk(self) -> int:
-        if len(self.equip)>0 or len(self.shields)>0:
+        if len(self.equip)>0:
            equip = sum([equip['atk'] for equip in self.equip])
-           shield = sum([shield['atk'] for shield in self.shields])
-           return shield + equip
+           return equip
         else:
             return 0
     #Calculates the bonus magical atk from player's equipament
     def bonus_magic_atk(self) -> int:
-        if len(self.equip)>0 or len(self.shields)>0:
+        if len(self.equip)>0:
             equip = sum([equip['magic_atk'] for equip in self.equip])
-            shield = sum([shield['magic_atk'] for shield in self.shields])
-            return shield + equip
+            return equip
         else:
             return 0
         
     #Calculates the bonus defense from player's equipament
     def bonus_den(self) -> int:
         #if len(self.equip)>0 or len(self.weapons)>0 or len(self.magic_weapons)>0 or len(self.shields)>0:
-        if len(self.equip)>0 or len(self.shields)>0:
+        if len(self.equip)>0:
             equip = sum([equip['den'] for equip in self.equip])
             #magic = sum([magic_equip['den'] for magic_equip in self.magic_weapons])
             #weapon = sum([weapon['den'] for weapon in self.weapons])
-            shield = sum([shield['den'] for shield in self.shields])
-            return shield + equip
+            return equip
         else:
             return 0
         
      #Calculates the bonus magical defense from player's equipament   
     def bonus_magic_den(self) -> int:
         #if len(self.equip)>0 or len(self.weapons)>0 or len(self.magic_weapons)>0 or len(self.shields)>0:
-        if len(self.equip)>0 or len(self.shields)>0:
+        if len(self.equip)>0:
             equip = sum([equip['magic_den'] for equip in self.equip])
             #magic = sum([magic_equip['magic_den'] for magic_equip in self.magic_weapons])
             #weapon = sum([weapon['magic_den'] for weapon in self.weapons])
-            shield = sum([shield['magic_den'] for shield in self.shields])
-            return shield + equip
+            return equip
         else:
             return 0
      

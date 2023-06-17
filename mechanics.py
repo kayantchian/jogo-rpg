@@ -89,7 +89,7 @@ def fight(player, enemy) -> bool:
     while enemy.hp > 0:
         if(player_choose_op):
             turn = not turn
-            sleep(1.5)
+            sleep(1)
             print(f""" --- {enemy.name} ---
                 | HP: {enemy.hp:.2f}
                 | ATK: {enemy.atk:.2f}
@@ -111,12 +111,16 @@ def fight(player, enemy) -> bool:
                 choices=["Atacar", "Magia", "Habilidade", "Defender",
                          "Curar", "Passar a vez", "Fugir"],
             ).execute()
+
+
             if(player_choice == "Curar"):
                 if(use_item(player,"Poção de vida")):
                     player.hp = player.MAX_HP
                     print(f"\nVocê se curou.\nHP atual: {player.hp}")
+                    sleep(1.5)
                 else:
                     print("\nVocê não possui poções")
+                    sleep(1.5)
             
             # Magic damage
             if (player_choice == "Magia"):
@@ -133,15 +137,18 @@ def fight(player, enemy) -> bool:
                             print(
                                 f"\nVocê causou {magical_atk} de dano mágico!", end="\n")
                             enemy.hp = enemy.hp - (magical_atk-enemy.magic_den)
+                            sleep(1.5)
                         else:
                             print(
                                 f"Seu ataque não causou dano em {enemy.name}", end="\n")
                             enemy.magic_den -= magical_atk
                             print(
-                                f"Mas a resistência mágica de {enemy.name} foi reduzida para {enemy.den}")
+                                f"\nMas a resistência mágica de {enemy.name} foi reduzida para {enemy.den}")
+                            sleep(1.5)
                     else:
                         print(
-                            f"\n Mana insuficiente. Requer {magic_item['cost_mana'] - player.mana} de mana.\n")
+                            f"\nMana insuficiente. Requer {magic_item['cost_mana'] - player.mana} de mana.\n")
+                        sleep(1.5)
                 else: #If player didn't chose a magic weapon.
                     player_choose_op = False
                     pass
@@ -155,13 +162,15 @@ def fight(player, enemy) -> bool:
                     if (full_atk > enemy.den):
                         enemy.den -= full_atk
                         print(f"\nVocê causou {full_atk} de dano!", end="\n")
-                        enemy.hp = enemy.hp - full_atk
+                        enemy.hp = enemy.hp - (full_atk-enemy.den)
+                        sleep(1.5)
                     else:
                         print(
                             f"\nSeu ataque não causou dano em {enemy.name}", end="\n")
                         enemy.den -= full_atk
                         print(
-                            f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
+                            f"\nMas a defesa de {enemy.name} foi reduzida para {enemy.den}")
+                        sleep(1.5)
                 else:
                     player_choose_op = False
                     pass
@@ -170,18 +179,27 @@ def fight(player, enemy) -> bool:
                 skill = skill_choice(player)
                 if(skill): #Verifies if player choose an skill
                     player_choose_op = True
-                    damage = skill['skill'](player, enemy)
-                    full_atk = damage*(ENEMY_MAGIC_RESISTENCE)/100
-                    if (full_atk > enemy.den):
-                        enemy.den -= full_atk
-                        print(f"\nVocê causou {full_atk} de dano!", end="\n")
-                        enemy.hp = enemy.hp - full_atk
+                    if (player.mana >= skill['cost_mana']): #If player has mana
+                        player.mana -= skill['cost_mana']
+                        damage = skill['skill'](player, enemy)
+                        full_atk = damage*(ENEMY_MAGIC_RESISTENCE)/100
+                        if (full_atk > enemy.magic_den):
+                            enemy.magic_den -= full_atk
+                            print(f"\nVocê causou {full_atk} de dano!", end="\n")
+                            enemy.hp = enemy.hp - (full_atk-enemy.magic_den)
+                            sleep(2)
+                        else:
+                            print(
+                                f"\nMas seu ataque não causou dano em {enemy.name}", end="\n")
+                            enemy.magic_den -= full_atk
+                            sleep(1)
+                            print(
+                                f"\nMas a resistência mágica de {enemy.name} foi reduzida para {enemy.magic_den}")
+                            sleep(2)
                     else:
                         print(
-                            f"\nSeu ataque não causou dano em {enemy.name}", end="\n")
-                        enemy.den -= full_atk
-                        print(
-                            f"Mas a defesa de {enemy.name} foi reduzida para {enemy.den}")
+                            f"\nMana insuficiente. Requer {magic_item['cost_mana'] - player.mana} de mana.\n")
+                        sleep(1.5)
                 else:
                     player_choose_op = False
                     pass
@@ -192,6 +210,7 @@ def fight(player, enemy) -> bool:
                     DEFENSE = defense_item['den']
                     MAGIC_RESISTENCE = defense_item['magic_den']
                     print(f"\nVocê usou {defense_item['name']} para se defender!")
+                    sleep(2)
                 else:
                     player_choose_op = False
                     pass
@@ -207,6 +226,7 @@ def fight(player, enemy) -> bool:
                     
             elif (player_choice == "Passar a vez"):
                 print("\nVocê passou a vez!\n")
+                sleep(1.5)
                 pass
 
         # Enemy's turn
@@ -245,7 +265,7 @@ def fight(player, enemy) -> bool:
                 if(MAGIC_RESISTENCE > 0):
                     print("\nVocê se defendeu do ataque...")
                 full_den_player = player.magic_den + player.bonus_magic_den()
-                sleep(1)
+                sleep(1.5)
                 magic = enemy.magic_atk - (MAGIC_RESISTENCE/100)*enemy.magic_atk
                 if (magic > full_den_player):
                     if (random.random() <= (enemy.critical_atk)/100):
@@ -253,24 +273,27 @@ def fight(player, enemy) -> bool:
                         print(
                             f"\n{enemy.name} te acertou um ataque crítico! {magic} de dano\n", end="\n")
                         player.hp = player.hp - (magic)
+                        sleep(1.5)
                     else:
                         print(
                             f"\n{enemy.name} te atacou com magia! {magic} de dano\n", end="\n")
                         player.hp = player.hp - (magic - full_den_player)
                         player.magic_den -= magic
+                        sleep(1.5)
                 else:
                     player.magic_den -= magic
                     sleep(0.2)
                     print(f"\nA magia de {enemy.name} não teve efeito.", end="\n")
-                    sleep(0.5)
+                    sleep(1.5)
                     print(
                         f"Mas sua resistencia mágica foi reduzida para {player.magic_den}")
+                    sleep(1.5)
             #ENEMY DEFENSE
             elif(enemy_choice == "den"):
                 print(f"\n{enemy.name} se defendeu!")
                 ENEMY_DEFENSE = enemy.MAX_DEN
                 ENEMY_MAGIC_RESISTENCE = enemy.MAGIC_MAX_DEN
-
+                sleep(1.5)
 
 
         # Verifies if player is dead
