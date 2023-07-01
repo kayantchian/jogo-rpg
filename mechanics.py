@@ -181,7 +181,7 @@ def fight(player, enemy) -> bool:
                     player_choose_op = True
                     if (player.mana >= skill['cost_mana']): #If player has mana
                         player.mana -= skill['cost_mana']
-                        damage = skill['skill'](player, enemy)
+                        damage = skill['skill'](player)
                         full_atk = damage*(ENEMY_MAGIC_RESISTENCE)/100
                         if (full_atk > enemy.magic_den):
                             enemy.magic_den -= full_atk
