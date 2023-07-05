@@ -5,10 +5,12 @@ from InquirerPy.separator import Separator
 import time
 import sys
 from game import Game
+from tqdm import tqdm
+
 
 class Interface():
     
-    def creditos(self) -> None:
+    def creditos() -> None:
         __AUTHOR__ = "\n\n  Feito por Kayan Tchian  \n\n"
         for x in range(1, 15):
             print("==", end="", flush=True)
@@ -35,12 +37,14 @@ class Interface():
                 default="Novo Jogo",
             ).execute()
             if op == "Novo Jogo":
+                for i in tqdm(range(4)):
+                    time.sleep(i)
                 game = Game()
                 if(game.game()):
                     print("Você zerou o jogo!")
                     Interface.creditos()
             elif op == "Créditos":
-                credits()
+                Interface.creditos()
             else:
                 sys.exit(0)
 
