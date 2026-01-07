@@ -6,7 +6,22 @@ import time
 from random import choice
 from character.player import *
 from shop import Loja
-from levels.level1 import *
+from levels.level1 import level1
+from levels.level2 import level2
+from levels.level3 import level3
+
+
+LEVELS = [level1, level2, level3]
+
+def start_journey(player):
+    for i, lvl in enumerate(LEVELS, start=1):
+        print(f"\n⚔️ Iniciando Nível {i}\n")
+        if not lvl(player):
+            print(f"\n☠️ Você morreu no nível {i}")
+            return False
+    return True
+
+
 
 class Game():
     _instance = {}
@@ -36,8 +51,15 @@ class Game():
             ).execute()
         
         
-            if(moviment=="Começar jornada"):
-                level1(player)
+            if(moviment == "Começar jornada"):
+                venceu = start_journey(player)
+                if venceu:
+                    print("\n🎉 PARABÉNS! Você zerou o jogo!\n")
+                    return True
+                else:
+                    print("\n💀 Fim de jogo.\n")
+                    return False
+
             elif(moviment=="Loja"):
                 print(f"\nSaldo atual: {player.money}\n")
                 op_loja = True
